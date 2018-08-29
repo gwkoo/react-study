@@ -5,7 +5,7 @@ import Movie from './Movie';
 /**
  * props - properties 약어, 부모(호출하는쪽) 에서 자기자신(구현부) 쪽에 정보를 전달하기 위해 사용한다.
  */
-class App extends Component {
+export default class App extends Component {
   state = {
   }
 
@@ -14,8 +14,9 @@ class App extends Component {
   }
 
   _renderMovies = () => {
-    const movies = this.state.movies.map((movie, index) => {
-      return <Movie title={movie.title} poster={movie.medium_cover_image} key={index}/>
+    const movies = this.state.movies.map(movie => {
+      console.log(movie);
+      return <Movie key={movie.id} title={movie.title_english} poster={movie.medium_cover_image} genres={movie.genres} synopsis={movie.synopsis}/>
     })
     return movies
   }
@@ -23,24 +24,24 @@ class App extends Component {
   _getMovies = async () => {
     const movies = await this._callApi()
     this.setState({
-      movies: movies
+      movies
     })
   }
 
   _callApi = () => {
-    return fetch('https://yts.am/api/v2/list_movies.json?sort_by=rating')
+    return fetch('https://yts.am/api/v2/list_movies.json?sort_by=download_count')
     .then(response => response.json())
     .then(json => json.data.movies)
     .catch(err => console.log(err))
   }
 
   render() {
+    const { movies } = this.state;
     return (
-      <div className="App">
-        {this.state.movies ? this._renderMovies() : 'Loading'}
+      <div className={movies ? "App" : "App--loading"}>
+        {movies ? this._renderMovies() : 'Loading'}
       </div>
     );
   }
 }
 
-export default App;
