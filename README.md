@@ -1,4 +1,4 @@
-#  gwkoo React Application Study
+#  gwkoo React Web Application Study
 
 >by nomard coder movie_app
 
